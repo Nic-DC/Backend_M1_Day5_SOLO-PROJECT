@@ -8,7 +8,7 @@ const productSchema = {
       errorMessage: "Name is a mandatory field and needs to be a string!",
     },
   },
-  desrcription: {
+  description: {
     in: ["body"],
     isString: {
       errorMessage: "Description is a mandatory field and needs to be a string!",
@@ -20,12 +20,12 @@ const productSchema = {
       errorMessage: "Brand is a mandatory field and needs to be a string!",
     },
   },
-  // price: {
-  //   in: ["body"],
-  //   isNumeric: {
-  //     errorMessage: "Price is a mandatory field and needs to be a number",
-  //   },
-  // },
+  price: {
+    in: ["body"],
+    isNumeric: {
+      errorMessage: "Price is a mandatory field and needs to be a number",
+    },
+  },
   category: {
     in: ["body"],
     isString: {

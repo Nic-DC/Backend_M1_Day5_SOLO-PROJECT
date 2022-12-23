@@ -41,3 +41,5 @@ filesRouter.post("/product/:id", multer().single("image"), async (req, res, next
     next(error);
   }
 });
+
+export default filesRouter;

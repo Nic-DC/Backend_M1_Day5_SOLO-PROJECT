@@ -1,7 +1,7 @@
 import express from "express";
 import uniqid from "uniqid";
 import { checkProductSchema, triggerBadRequest } from "./validator.js";
-import { getBlogPosts, getProducts, writeBlogPosts, writeProducts } from "../../lib/fs-tools.js";
+import { getProducts, writeProducts } from "../../lib/fs-tools.js";
 
 import httpErrors from "http-errors";
 const { NotFound, BadRequest } = httpErrors;
@@ -15,8 +15,9 @@ productsRouter.post("/", checkProductSchema, triggerBadRequest, async (req, res,
 
   try {
     const product = {
-      ...req.body,
       _id: uniqid(),
+      ...req.body,
+
       // category: "ARTICLE CATEGORY",
       // title: "ARTICLE TITLE",
       // cover: "ARTICLE COVER (IMAGE LINK)",
@@ -40,7 +41,7 @@ productsRouter.post("/", checkProductSchema, triggerBadRequest, async (req, res,
     // fs.writeFileSync(postsJSONPath, JSON.stringify(postsList));
     await writeProducts(productsList);
 
-    res.status(201).send({ message: `Product: '${product.name}' has been created by`, id: product._id });
+    res.status(201).send({ message: `Product: '${product.name}' has been created`, id: product._id });
   } catch (error) {
     next(error);
   }
@@ -60,6 +61,7 @@ productsRouter.get("/", async (req, res, next) => {
       res.send(filteredProducts);
     } else {
       res.send(productsList);
+      // next(NotFound(`There is no such "${req.query.category}"category`));
     }
   } catch (error) {
     next(error);
@@ -76,7 +78,7 @@ productsRouter.get("/:productId", async (req, res, next) => {
 
     const product = productsList.find((product) => product._id === productId);
 
-    if (post) {
+    if (product) {
       res.send(product);
     } else {
       // next(createHttpError(404, `The post with id: ${blogPostId} is not in the archive`));
@@ -93,7 +95,7 @@ productsRouter.put("/:productId", async (req, res, next) => {
     const { productId } = req.params;
 
     // const postsList = JSON.parse(fs.readFileSync(postsJSONPath));
-    const productsList = await getBlogPosts();
+    const productsList = await getProducts();
     const index = productsList.findIndex((product) => product._id === productId);
 
     if (index !== -1) {
@@ -118,20 +120,20 @@ productsRouter.put("/:productId", async (req, res, next) => {
 productsRouter.delete("/:productId", async (req, res, next) => {
   try {
     // const postsList = JSON.parse(fs.readFileSync(postsJSONPath));
-    const postsList = await getBlogPosts();
+    const productsList = await getProducts();
 
-    const remainingPosts = postsList.filter((post) => post._id !== req.params.productId);
+    const remainingProducts = productsList.filter((product) => product._id !== req.params.productId);
 
-    if (postsList.length !== remainingPosts.length) {
+    if (productsList.length !== remainingProducts.length) {
       // fs.writeFileSync(postsJSONPath, JSON.stringify(remainingPosts));
-      writeBlogPosts(remainingPosts);
-      res.send({ message: `Post deleted successfully` });
+      writeProducts(remainingProducts);
+      res.send({ message: `Product deleted successfully` });
     } else {
-      next(NotFound(`The post with the id: ${req.params.productId} is not in our archive`));
+      next(NotFound(`The product with the id: ${req.params.productId} is not in our archive`));
     }
   } catch (error) {
     next(error);
   }
 });
 
-export default postsRouter;
+export default productsRouter;

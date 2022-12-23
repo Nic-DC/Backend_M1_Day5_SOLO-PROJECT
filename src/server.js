@@ -9,7 +9,7 @@ import { join } from "path";
 
 import { badRequestHandler, notFoundHandler, serverErrorHandler } from "./errorHandler.js";
 
-import cors from "cors";
+// import cors from "cors";
 
 const server = express();
 
@@ -18,12 +18,12 @@ const port = 3005;
 const publicFolderPath = join(process.cwd(), "./public");
 
 server.use(express.static(publicFolderPath));
-server.use(cors()); // Just to let FE communicate with BE successfully
+// server.use(cors()); // Just to let FE communicate with BE successfully
 server.use(express.json());
 
 /*-----------ENDPOINTS-------------*/
 server.use("/products", productsRouter);
-server.use("/reviews", reviewsRouter);
+// server.use("/reviews", reviewsRouter);
 server.use("/files", filesRouter);
 
 /*-----------ERROR HANDLERS-------------*/

@@ -1,7 +1,7 @@
 import express from "express";
 import uniqid from "uniqid";
 import { checkReviewSchema, triggerBadRequest } from "./validator.js";
-import { getBlogPosts, writeBlogPosts } from "../../lib/fs-tools.js";
+// import { getBlogPosts, writeBlogPosts } from "../../lib/fs-tools.js";
 
 import httpErrors from "http-errors";
 const { NotFound, BadRequest } = httpErrors;
@@ -134,4 +134,4 @@ reviewsRouter.delete("/:blogPostId", async (req, res, next) => {
   }
 });
 
-export default postsRouter;
+export default reviewsRouter;
