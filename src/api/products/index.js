@@ -100,7 +100,7 @@ productsRouter.put("/:productId", async (req, res, next) => {
 
     if (index !== -1) {
       const oldProduct = productsList[index];
-      const updatedProduct = { ...oldProduct, ...req.body, updatedAt: new Date() };
+      const updatedProduct = { ...oldProduct, ...req.body, createdAt: new Date() };
       productsList[index] = updatedProduct;
 
       console.log("Updated post: ", updatedProduct);

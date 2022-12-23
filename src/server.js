@@ -24,7 +24,7 @@ server.use(express.json());
 /*-----------ENDPOINTS-------------*/
 server.use("/products", productsRouter);
 server.use("/products", reviewsRouter);
-server.use("/files", filesRouter);
+server.use("/products", filesRouter);
 
 /*-----------ERROR HANDLERS-------------*/
 server.use(badRequestHandler);

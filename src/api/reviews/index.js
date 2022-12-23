@@ -121,7 +121,7 @@ reviewsRouter.put("/:productId/reviews/:id", async (req, res, next) => {
 
       if (index !== -1) {
         const oldReview = reviewsList[index];
-        const updatedReview = { ...oldReview, ...req.body, updatedAt: new Date() };
+        const updatedReview = { ...oldReview, ...req.body, createdAt: new Date() };
         reviewsList[index] = updatedReview;
 
         console.log("Updated post: ", updatedReview);
@@ -130,7 +130,7 @@ reviewsRouter.put("/:productId/reviews/:id", async (req, res, next) => {
         await writeReviews(reviewsList);
         res.send(updatedReview);
       } else {
-        next(NotFound(`Review with id ${reviewId} not found!`));
+        next(NotFound(`Review with id ${id} not found!`));
       }
     } else {
       next(NotFound(`Product with id ${productId} not found!`));
@@ -143,17 +143,28 @@ reviewsRouter.put("/:productId/reviews/:id", async (req, res, next) => {
 // 5. DELETE SINGLE AUTHOR: http://localhost:3001/authors/:productId
 reviewsRouter.delete("/:productId/reviews/:id", async (req, res, next) => {
   try {
-    // const postsList = JSON.parse(fs.readFileSync(postsJSONPath));
-    const reviewsList = await getReviews();
+    const productId = req.params.productId;
+    const productsList = await getProducts();
+    const product = productsList.find((product) => product._id === productId);
+    console.log("productId: ", productId);
 
-    const remainingReviews = reviewsList.filter((review) => review._id !== req.params.productId);
+    if (product) {
+      const { id } = req.params;
+      console.log("review id is: ", id);
+      // const postsList = JSON.parse(fs.readFileSync(postsJSONPath));
+      const reviewsList = await getReviews();
 
-    if (postsList.length !== remainingReviews.length) {
-      // fs.writeFileSync(postsJSONPath, JSON.stringify(remainingPosts));
-      writeReviews(remainingReviews);
-      res.send({ message: `Review deleted successfully` });
+      const remainingReviews = reviewsList.filter((review) => review._id !== req.params.id);
+
+      if (reviewsList.length !== remainingReviews.length) {
+        // fs.writeFileSync(postsJSONPath, JSON.stringify(remainingPosts));
+        writeReviews(remainingReviews);
+        res.send({ message: `Review deleted successfully` });
+      } else {
+        next(NotFound(`The review with the id: ${req.params.id} is not in our archive`));
+      }
     } else {
-      next(NotFound(`The post with the id: ${req.params.productId} is not in our archive`));
+      next(NotFound(`The product with the id: ${productId} is not in our archive`));
     }
   } catch (error) {
     next(error);

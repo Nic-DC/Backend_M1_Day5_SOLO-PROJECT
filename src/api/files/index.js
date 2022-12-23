@@ -35,7 +35,7 @@ filesRouter.post("/product/:id", multer().single("image"), async (req, res, next
 
       await writeProducts(productsList);
     }
-    res.send("Product image is uploaded");
+    res.send("Product image uploaded successfully");
   } catch (error) {
     console.log(error);
     next(error);
