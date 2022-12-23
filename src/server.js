@@ -23,7 +23,7 @@ server.use(express.json());
 
 /*-----------ENDPOINTS-------------*/
 server.use("/products", productsRouter);
-// server.use("/reviews", reviewsRouter);
+server.use("/products", reviewsRouter);
 server.use("/files", filesRouter);
 
 /*-----------ERROR HANDLERS-------------*/

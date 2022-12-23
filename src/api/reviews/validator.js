@@ -2,16 +2,24 @@ import { checkSchema, validationResult } from "express-validator";
 import createHttpError from "http-errors";
 
 const reviewSchema = {
-  category: {
+  comment: {
     in: ["body"],
     isString: {
-      errorMessage: "Category is a mandatory field and needs to be a string!",
+      errorMessage: "Comment is a mandatory field and needs to be a string!",
     },
   },
-  title: {
+  rate: {
+    in: ["body"],
+    isDecimal: {
+      errorMessage: "Rate is a mandatory field and needs to be between 1 and 5",
+      force_decimal: true,
+      decimal_digits: "1,5",
+    },
+  },
+  productId: {
     in: ["body"],
     isString: {
-      errorMessage: "Title is a mandatory field and needs to be a string!",
+      errorMessage: "productId is a mandatory field and needs to be a string!",
     },
   },
 };
