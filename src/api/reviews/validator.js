@@ -11,11 +11,16 @@ const reviewSchema = {
   rate: {
     in: ["body"],
     isDecimal: {
-      errorMessage: "Rate is a mandatory field and needs to be between 1 and 5",
-      force_decimal: true,
-      decimal_digits: "1,5",
+      errorMessage: "Price is a mandatory field and needs to be a number",
     },
   },
+  // rate: {
+  //   in: ["body"],
+  //   isDecimal: {
+  //     errorMessage: "Rate is a mandatory field and needs to be between 1 and 5",
+  //     force_decimal: true,
+  //   },
+  // },
   productId: {
     in: ["body"],
     isString: {
